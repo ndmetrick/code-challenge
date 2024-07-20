@@ -2,31 +2,60 @@
 document.addEventListener('DOMContentLoaded', function () {
   const addressForm = document.querySelector('.form')
 
-  addressForm.addEventListener('submit', parseAddressInput)
+  addressForm.addEventListener('submit', async (e) => {
+    try {
+      const results = await parseAddressInput(e)
+      displayResults(results)
+    } catch (error) {
+      displayError(error.message)
+    }
+  })
 })
 
 const parseAddressInput = async (e) => {
   e.preventDefault()
   const input = document.getElementById('address').value
-
   try {
     const response = await fetch('/api/parse?input=' + encodeURIComponent(input))
     if (!response.ok) {
-      throw new Error('Network error')
+      const errorResponse = await response.json()
+      throw new Error(errorResponse.detail)
     } else {
       const jsonResponse = await response.json()
-      console.log('what do we have', jsonResponse, 'd', response)
-      const addressComponents = jsonResponse.address_components
-      const addressType = jsonResponse.address_type
+      return jsonResponse
     }
   } catch (error) {
-    console.log('error', error)
-
+    throw new Error(error.message)
   }
 }
 
+const displayResults = (response) => {
+  const addressComponents = response.address_components
+  const addressType = response.address_type
 
+  document.getElementById('parse-type').innerHTML = addressType
 
+  const componentsToDisplay = document.getElementById('address-components')
+  componentsToDisplay.innerHTML = ''
 
+  let addressComponentsHTML = ''
 
-/* eslint-disable strict */
+  for (const componentType in addressComponents) {
+    addressComponentsHTML += '<tr>'
+    addressComponentsHTML += '<td>' + addressComponents[componentType] + '</td>'
+    addressComponentsHTML += '<td>' + componentType + '</td>'
+    addressComponentsHTML += '</tr>'
+  }
+  componentsToDisplay.innerHTML = addressComponentsHTML
+
+  document.getElementById('address-results').style.display = 'block'
+  document.getElementById('parse-error').style.display = 'none'
+}
+
+const displayError = (error) => {
+  const errorToDisplay = document.getElementById('error-text')
+  errorToDisplay.innerHTML = error
+
+  document.getElementById('address-results').style.display = 'none'
+  document.getElementById('parse-error').style.display = 'block'
+}
