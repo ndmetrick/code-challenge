@@ -7,10 +7,12 @@ from rest_framework.exceptions import ParseError
 
 
 class Home(TemplateView):
+
     template_name = 'parserator_web/index.html'
 
 
 class AddressParse(APIView):
+
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
@@ -20,13 +22,18 @@ class AddressParse(APIView):
         except ParseError as e:
             raise ParseError(e)
         [address_components, address_type] = parsed_address
-        return Response({'input_string': input_string, 'address_components': address_components, 'address_type': address_type})
+        return Response({'input_string': input_string,
+                         'address_components': address_components,
+                         'address_type': address_type})
 
     def parse(self, address):
         try:
             address_components, address_type = usaddress.tag(address)
 
         except usaddress.RepeatedLabelError as e:
-            raise ParseError('Unable to parse this value due to repeated labels. Our team has been notified of the error.', e)
+            error = (
+                'Unable to parse this value due to repeated labels.'
+                'Our team has been notified of the error.')
+            raise ParseError(error, e)
 
         return address_components, address_type
