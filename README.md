@@ -1,31 +1,22 @@
-# DataMade Code Challenge: Parserator
+# Nate Metrick's DataMade Code Challenge: Parserator
 
-Welcome to the DataMade code challenge! 👋
+Welcome to my submission for the DataMade code challenge! 👋
 
-Your task is to recreate the **address parsing form** in DataMade's
-[Parserator](https://parserator.datamade.us) web service. Parserator can take
-input strings that represent addresses (like `123 main st chicago il`)
-and split them up into their component parts:
+Parserator can take input strings that represent addresses (like `123 main st chicago il`)
+and split them up into their component parts.
 
-![Example of Parserator parsing the string "123 main st chicago il"](images/usaddress.gif)
-
-In this repo, we've provided the basic scaffolding of the templates, views, and
-routes that comprise the app. You'll need to flesh out certain code blocks in
-the frontend and backend code in order to send API requests, process them on
-the server, and display the results to the user.
-
-You can use vanilla JavaScript or jQuery to complete the JavaScript portions of
-this assessment.
-
-To get started, fork this repo and follow the instructions below.
+To get started, clone this repo and follow the instructions below.
 
 ## Installation
 
-Development requires a local installation of [Docker](https://docs.docker.com/install/)
-and [Docker Compose](https://docs.docker.com/compose/install/). These are the
-only two system-level dependencies you should need.
+Development requires a local installation of [Docker](https://docs.docker.com/install/) and [Docker Compose](https://docs.docker.com/compose/install/).
 
 Once you have Docker and Docker Compose installed, build the application containers:
+
+```
+docker compose build
+```
+or, if using V1 of Docker Compose:
 
 ```
 docker-compose build
@@ -34,78 +25,34 @@ docker-compose build
 Next, run the app:
 
 ```
+docker compose up
+```
+
+or, if using v1 of Docker Compose:
+
+```
 docker-compose up
 ```
 
-The app will log to the console, and you should be able to visit it at http://localhost:8000.
+You should be able to visit the app at http://localhost:8000.
 
-## Completing the challenge
+## Play with the Parserator
 
-Once you have the app up and running on your computer, you'll need to flesh out
-certain code blocks to complete the parsing interface.
+To use the parserator, follow these steps:
 
-**Note:** You can use the following address strings for testing during implementation:
+1. Open your web browser and navigate to [http://localhost:8000](http://localhost:8000).
+2. Enter an address string (e.g., `123 main st chicago il`) into the input form.
+3. Submit the form to see the parsed components of the address (or the error message, depending on what you decide to type in).
+
+### Example Inputs
 
 - ✅ Valid: `123 main st chicago il`
 - ❌ Invalid: `123 main st chicago il 123 main st`
 
-### Step 1: Implement the `parse` method
+The results will be displayed on the page, showing the components of the address and the address type.
 
-In `parserator_web/views.py`, use [`usaddress`](https://github.com/datamade/usaddress)
-to implement the `AddressParse.parse()` method. It should return two pieces of
-data:
-
-- `address_components`: The parsed address
-- `address_type`: The type of address provided
-
-### Step 2: Complete the API endpoint
-
-In `parserator_web/views.py`, complete the `AddressParse.get()` method to return
-three pieces of data:
-
-- `input_string`: The string that the user sent
-- `address_components`: A dictionary of parsed components that comprise the address,
-   in the format `{address_part: tag}` (returned by `AddressParse.parse()`)
-- `address_type`: A string representing type of the parsed address (returned by `AddressParse.parse()`)
-
-Don't forget to handle strings that cannot be parsed and return errors!
-
-### Step 3: Wire up the form to send requests to the API
-
-In `parserator_web/templates/parserator_web/index.html`, fill out the `<script>`
-tag in the `extra_js` block, adding JavaScript code that will use the form
-to send form data to the API endpoint fleshed out in Step 2.
-
-### Step 4: Display results from the API
-
-In `parserator_web/templates/parserator_web/index.html`, extend the `<script>`
-tag in the `extra_js` block to display results from the API endpoint in the
-hidden element `<div id="address-results">`.
-
-Make sure that if the API raises an error, it displays this error to the user.
-
-### Step 5: Add unit tests
-
-The `tests/` directory contains two stubbed tests. Complete each test by making
-a request to the API endpoint and verifying that it passes or fails, and
-returns the expected output.
+## Run tests
 
 You can run the tests using Docker:
 
-```bash
-docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
-```
-
-Note that, in addition to running the unit tests, the testing script will lint
-your JavaScript and Python code. Don't forget to fix any linting errors these
-commands surface!
-
-Not familiar with `pytest`? Consult [our testing guidelines](https://github.com/datamade/testing-guidelines)
-for quick start instructions, plus tips and tricks for testing Django
-applications.
-
-### Step 6: Submit your work
-
-To submit your work, create a feature branch for your code, commit your changes,
-push your commits up to your fork, and open up a pull request against `master`.
-Finally, drop a link to your pull request in your application.
+docker compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
