@@ -32,7 +32,7 @@ class AddressParse(APIView):
 
         except usaddress.RepeatedLabelError as e:
             error = (
-                'Unable to parse this value due to repeated labels.'
+                'Unable to parse this value due to repeated labels. '
                 'Our team has been notified of the error.')
             raise ParseError(error, e)
 
