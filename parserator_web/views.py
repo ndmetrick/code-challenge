@@ -21,7 +21,7 @@ class AddressParse(APIView):
             parsed_address = self.parse(input_string)
         except ParseError as e:
             raise ParseError(e)
-        [address_components, address_type] = parsed_address
+        address_components, address_type = parsed_address
         return Response({'input_string': input_string,
                          'address_components': address_components,
                          'address_type': address_type})
