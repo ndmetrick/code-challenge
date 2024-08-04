@@ -35,18 +35,16 @@ const displayResults = (response) => {
 
   document.getElementById('parse-type').innerHTML = addressType
 
-  const componentsToDisplay = document.getElementById('address-components')
-  componentsToDisplay.innerHTML = ''
-
-  let addressComponentsHTML = ''
+  const addressComponentsTable = document.getElementById('address-components')
+  addressComponentsTable.innerHTML = ''
 
   for (const componentType in addressComponents) {
-    addressComponentsHTML += '<tr>'
-    addressComponentsHTML += '<td>' + addressComponents[componentType] + '</td>'
-    addressComponentsHTML += '<td>' + componentType + '</td>'
-    addressComponentsHTML += '</tr>'
+    const row = addressComponentsTable.insertRow()
+    const addressPart = row.insertCell(0)
+    const tag = row.insertCell(1)
+    addressPart.innerHTML = addressComponents[componentType]
+    tag.innerHTML = componentType
   }
-  componentsToDisplay.innerHTML = addressComponentsHTML
 
   document.getElementById('address-results').style.display = 'block'
   document.getElementById('parse-error').style.display = 'none'
