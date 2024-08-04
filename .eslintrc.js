@@ -2,6 +2,10 @@ module.exports = {
   globals: {
     __PATH_PREFIX__: true,
   },
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: 'module'
+  },
   rules: {
     "indent": ["error", 2],
     "no-console": "off",
